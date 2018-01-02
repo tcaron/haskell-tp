@@ -22,7 +22,7 @@ main = do
       writePoint (x,y) = (show x)++","++(show y)++" "
 
   let writeShape :: (Color,Polygon) -> String 
-      writeShape ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:2\"/>"
+      writeShape ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:rgb("++(show r)++","++(show g)++","++(show b)++");stroke:black;stroke-width:2\"/>"
   
   let writeShapes :: [(Color,Polygon)] -> String 
       writeShapes p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeShape p)++"</svg>"
@@ -32,4 +32,4 @@ main = do
 
   let rainbow@[red,green,blue,yellow,purple,teal] = map colorize [(255,0,0),(0,255,0),(0,0,255),(255,255,0),(255,0,255),(0,255,255)]
 
-  writeFile "img.svg" $ writePolygons (purple [[(100,100),(200,100),(200,200),(100,200)],[(200,200),(300,200),(300,300),(200,300)]])
+  writeFile "img.svg" $ writeShapes (purple [[(100,100),(200,100),(200,200),(100,200)],[(200,200),(300,200),(300,300),(200,300)]])
