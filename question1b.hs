@@ -1,36 +1,35 @@
-import System.IO
+import Data.List
+import Text.Regex
+import System.Random
+import Data.Ord
+
+type Point     = (Float,Float)
+type Circle    = (Int,Int,Int)
+type Rectangle = (Int,Int,Int,Int)
+type Triangle  = [Point] 
+type Color     = (Int,Int,Int)
+data Shape     =  Circle | Rectangle | Link | BrokenLink | Polygon deriving(Show)
+data DrawingArea = Int Int [Shape]
+type BrokenLink = [Point]
+type Image     = (Int,Int,[Shape])
+type Polygon   = [Point] -- carre / triangle
+type Link      = [Point]
 
 
-data Shape = Rect Int Int Int Int | 
-    Circle Int Int Int |
-    Line [(Int,Int)] |
-    HashLine [(Int,Int)] deriving (Show)
-
-data Image = Image { 
-    width :: Int,
-    height :: Int,
-    shapes :: [Shape]
-    } deriving(Show)
- 
-
-begin = "<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' version='1.1'>"
-end = "</svg>"
-file = "image.svg"
-
-getWidth :: Image -> Int 
-getWidth (Image w _ _) = w 
-
-getHeight :: Image -> Int
-getHeight (Image _ h _) = h
-
-getShapes :: Image -> Int
-getShapes (Image _ _ (h:t)) = h 
+main = do 
   
+  let writePoint :: Point -> String 
+      writePoint (x,y) = (show x)++","++(show y)++" "
 
-export :: Image -> String
-export (Image w h _) = "Veuillez enregistrer des formes à dessiner"
---export (w h [(l)]) = 
-  -- let img = Image ()
-  --readFile file 
-  --writeFile file begin
-  --appendFile file end
+  let writeShape :: (Color,Polygon) -> String 
+      writeShape ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:2\"/>"
+  
+  let writeShapes :: [(Color,Polygon)] -> String 
+      writeShapes p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeShape p)++"</svg>"
+  
+  let colorize :: Color -> [Polygon] -> [(Color,Polygon)] 
+      colorize = zip.repeat
+
+  let rainbow@[red,green,blue,yellow,purple,teal] = map colorize [(255,0,0),(0,255,0),(0,0,255),(255,255,0),(255,0,255),(0,255,255)]
+
+  writeFile "img.svg" $ writePolygons (purple [[(100,100),(200,100),(200,200),(100,200)],[(200,200),(300,200),(300,300),(200,300)]])
