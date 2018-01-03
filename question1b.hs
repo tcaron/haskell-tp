@@ -5,14 +5,17 @@ import Data.Ord
 
 type Color     = (Int,Int,Int) 
 data Shape     =  Circle Int Int Int | Rectangle Int Int Int Int | Link Int Int Int Int | BrokenLink Int Int Int Int | Polygon [(Float,Float)]   deriving (Show)
-data DrawingArea = Int Int [Shape]
+type DrawingArea = (Int,Int,[(Color,Shape)])
 
+--Print des Shapes, fonction de test
 printShape :: Shape -> String 
 printShape s = ""++(show s)++""
 
+--fonction pour colorier nos shapes
 colorize :: Color -> [Shape] -> [(Color,Shape)] 
 colorize = zip.repeat
 
+--possibilité de rajouté des couleurs
 rainbow@[red,green,blue,yellow,purple,teal] = map colorize [(255,0,0),(0,255,0),(0,0,255),(255,255,0),(255,0,255),(0,255,255)]
 
 writePoints :: (Float,Float) -> String 
@@ -25,18 +28,21 @@ writeType ((r,g,b),(Link x y z w)) = "<line x1=\""++(show x)++"\" y1=\""++(show 
 writeType ((r,g,b),(BrokenLink x y z w)) = "<line stroke-dasharray= '5,5' x1=\""++(show x)++"\" y1=\""++(show y)++"\" x2=\""++(show z)++"\" y2=\""++(show w)++"\" stroke:rgb("++(show r)++","++(show g)++","++(show b)++")\"/>" 
 writeType ((r,g,b),(Polygon (h:t))) = "<polygon points=\""++(writePoints h)++"\" style=\"fill:rgb("++(show r)++","++(show g)++","++(show b)++");stroke:black;stroke-width:2\"/>"
 
-writeImg :: [(Color,Shape)] -> String
-writeImg s = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeType s)++"</svg>"
+writeShape :: [(Color,Shape)] -> String
+writeShape s = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeType s)++"</svg>"
 
+writeImg :: DrawingArea -> String
+writeImg (w,h,(ah:t)) = writeFile "img.svg" "<svg xmlns=\"http://www.w3.org/2000/svg\">
+writeImg (w,h,(ah:t))= "test"
+
+randomPolygon :: [(Color,Shape)] -> String
+randomPolygon s = "test"
 
 main = do 
  
- 
-  print $ writeImg (blue[(BrokenLink 15 12 13 15)])
+  print $ writeShape (blue[(BrokenLink 15 12 13 15)])
   print $ printShape (Circle 14 15 20)
 
-
-  
 
 --    let writePoint :: Point -> String 
 --      writePoint (x y) = (show x)++","++(show y)++" "
