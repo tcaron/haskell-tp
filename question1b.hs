@@ -2,6 +2,8 @@ import Data.List
 import Text.Regex
 import System.Random
 import Data.Ord
+import Graphics.Gloss
+
 
 type Color     = (Int,Int,Int) 
 data Shape     =  Circle Int Int Int | Rectangle Int Int Int Int | Link Int Int Int Int | BrokenLink Int Int Int Int | Polygon [(Float,Float)]   deriving (Show)
@@ -32,11 +34,33 @@ writeShape :: [(Color,Shape)] -> String
 writeShape s = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeType s)++"</svg>"
 
 writeImg :: DrawingArea -> String
-writeImg (w,h,(ah:t)) = writeFile "img.svg" "<svg xmlns=\"http://www.w3.org/2000/svg\">
 writeImg (w,h,(ah:t))= "test"
 
 randomPolygon :: [(Color,Shape)] -> String
 randomPolygon s = "test"
+
+
+-- partie Tortue --
+
+type Symbole  = Char
+type Mot      = [Symbole]
+type Axiome   = Mot
+type Regles   = Symbole -> Mot
+type LSysteme = [Mot]
+type Config = (EtatTortue -- État initial de la tortue
+              ,Float      -- Longueur initiale d’un pas
+              ,Float      -- Facteur d’échelle
+              ,Float      -- Angle pour les rotations de la tortue
+              ,[Symbole]) -- Liste des symboles compris par la tortue
+
+etatInitial :: Config -> EtatTortue
+longueurPas :: Config -> Float
+facteurEchelle :: Config -> Float
+angle :: Config -> Float
+symbolesTortue :: Config -> [Symbole]
+avance :: Config -> EtatTortue -> EtatTortue
+tourneAGauche :: Config -> EtatTortue -> EtatTortue
+tourneADroite :: Config -> EtatTortue -> EtatTortue
 
 main = do 
  
