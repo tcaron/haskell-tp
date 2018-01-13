@@ -5,4 +5,4 @@ end = "</svg>"
 file = "image.svg"
 main = do
   writeFile file begin
-  
+  appendFile file end
